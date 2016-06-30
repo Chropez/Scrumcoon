@@ -18,7 +18,7 @@ export default Route.extend({
     channel.get('users').addObject(currentUser);
     channel.save();
   },
-
+  
   actions: {
     createUser(name) {
       this.store.createRecord('user', { name }).save().then((user) => {

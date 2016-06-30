@@ -1,0 +1,17 @@
+{{#paper-card as |card|}}
+
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+       {{#text.headline}}Stories{{/text.headline}}
+    {{/title.text}}
+  {{/card.title}}
+
+  {{#card.content}}
+
+  {{/card.content}}
+
+  {{#card.actions}}
+    {{#paper-button primary=true raised=true}}Add{{/paper-button}}
+  {{/card.actions}}
+
+{{/paper-card}}

@@ -1,0 +1,17 @@
+.welcome-card {
+  md-card-title-text {
+    text-align: center;
+  }
+
+  md-card-content {
+    margin-top: 20px;
+    align-items: center;
+    display: flex;
+    flex-flow: column;
+  }
+
+  md-input-container {
+    position: relative;
+    top: 12px;
+  }
+}

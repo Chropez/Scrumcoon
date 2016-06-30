@@ -6,7 +6,7 @@ export default Route.extend({
   actions: {
     createRoom() {
       this.store.createRecord('channel', { name: 'new-channel ' }).save().then((channel) => {
-        this.transitionTo('channel', channel);
+        this.transitionTo('channel', channel.id);
       });
     }
   }

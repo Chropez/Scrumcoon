@@ -1,0 +1,26 @@
+{{#paper-card as |card|}}
+
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+       {{#text.headline}}Users{{/text.headline}}
+    {{/title.text}}
+  {{/card.title}}
+
+  {{#card.content}}
+    {{#each users as |user|}}
+      <div class="user-container">
+        <div class="user-avatar">
+          <img src="{{user.avatar}}">
+        </div>
+        <div class="user-name {{if (eq user.id session.currentUser.id) "active"}}">
+          {{user.name}}
+
+          {{#if (eq user.id session.currentUser.id)}}
+            {{#paper-button onClick=(action "leaveChannel" user) iconButton=true}}{{paper-icon "clear"}}{{/paper-button}}
+          {{/if}}
+        </div>
+      </div>
+    {{/each}}
+  {{/card.content}}
+
+{{/paper-card}}

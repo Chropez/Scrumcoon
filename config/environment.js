@@ -21,9 +21,13 @@ module.exports = function(environment) {
     },
 
     contentSecurityPolicy: {
-      'script-src': "'self' 'unsafe-eval' apis.google.com",
+      'default-src': "'none'",
       'frame-src': "self' https://*.firebaseapp.com",
-      'connect-src': "'self' wss://*.firebaseio.com https://*.googleapis.com"
+      'font-src': "'self' http://fonts.gstatic.com",
+      'script-src': "'self' 'unsafe-eval' apis.google.com",
+      'connect-src': "'self' wss://*.firebaseio.com https://*.googleapis.com",
+      'img-src': "'self' data:",
+      'media-src': "'self'"
     },
 
     APP: {

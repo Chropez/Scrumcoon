@@ -1,5 +1,23 @@
-<button {{action (route-action "createRoom")}}>Create a room</button>
-<hr>
-<label for="">Join an existing room</label>
-{{input type="text" value=room}}
-<button>Join Room</button>
+<div class="welcome-card layout-row layout-align-center-center flex" style="padding-top:10px;">
+  {{#paper-card class="flex-xs-100 flex-gt-xs-80 flex-gt-md-50" as |card|}}
+
+    {{#card.title as |title|}}
+      {{#title.text as |text|}}
+         {{#text.headline}}Welcome to ScrumCoon!{{/text.headline}}
+      {{/title.text}}
+    {{/card.title}}
+
+    {{#card.content}}
+      {{#paper-button primary=true raised=true onClick=(route-action "createRoom")}}Start a new planning session{{/paper-button}}
+      <div style="margin:15px 12px 8px">
+        <label for="">Or join an existing room</label>
+      </div>
+      <div style="margin-left:12px">
+        {{paper-input flex=80 label="Room-Id" value=room onChange=(action (mut room))}}
+        {{#paper-button raised=true onClick=(route-action "joinRoom") class=""}}Join{{/paper-button}}
+      </div>
+    {{/card.content}}
+
+
+  {{/paper-card}}
+</div>

@@ -1,4 +1,17 @@
-<h1>{{model.name}}</h1>
+{{#if (contains session.currentUser.id (map-by "id" model.users)) }}
+  <div class="channel-card channel-card--history layout-row layout-xs-column layout-gt-xs-align-center-center flex" style="padding-top:10px;">
+    {{sc-channel-stories class="flex-xs-100 flex-gt-xs-30 flex-gt-md-20"}}
+    {{sc-channel-story   class="flex-xs-100 flex-gt-xs-40 flex-gt-md-60"}}
+    {{sc-channel-users users=model.users class="flex-xs-100 flex-gt-xs-30 flex-gt-md-20"}}
+  </div>
+{{else}}
+  <label for="">Your name:</label>
+  {{input type="text" value=name}}
+  <button {{action (route-action "createUser" (mut name))}}>Join</button>
+{{/if}}
+
+
+{{!-- <h1>{{model.name}}</h1>
 
 {{#if session.currentUser}}
 
@@ -15,4 +28,4 @@
 
 {{/if}}
 
-{{outlet}}
+{{outlet}} --}}
