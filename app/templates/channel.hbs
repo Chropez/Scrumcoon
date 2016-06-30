@@ -1,0 +1,18 @@
+<h1>{{model.name}}</h1>
+
+{{#if session.currentUser}}
+
+  <h2>Hello {{session.currentUser.name}}</h2> <button {{action (route-action 'logout')}}>Log out</button>
+  <hr>
+  <h2>Users</h2>
+  {{#each model.users as |users|}}
+    {{users.name}} <br>
+  {{/each}}
+{{else}}
+  <label for="">Your name:</label>
+  {{input type="text" value=name}}
+  <button {{action (route-action "createUser" (mut name))}}>Join</button>
+
+{{/if}}
+
+{{outlet}}

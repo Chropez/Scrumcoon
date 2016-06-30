@@ -13,6 +13,19 @@ module.exports = function(environment) {
       }
     },
 
+    firebase: {
+      apiKey: "AIzaSyAJJnvmt79PthO8ZrscAZIj357S6sdRahc",
+      authDomain: "scrumcoon.firebaseapp.com",
+      databaseURL: "https://scrumcoon.firebaseio.com",
+      storageBucket: "scrumcoon.appspot.com"
+    },
+
+    contentSecurityPolicy: {
+      'script-src': "'self' 'unsafe-eval' apis.google.com",
+      'frame-src': "self' https://*.firebaseapp.com",
+      'connect-src': "'self' wss://*.firebaseio.com https://*.googleapis.com"
+    },
+
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
