@@ -3,7 +3,8 @@ import Ember from 'ember';
 const {
   get,
   inject: { service },
-  Route
+  Route,
+  set
 } = Ember;
 
 export default Route.extend({
@@ -18,7 +19,7 @@ export default Route.extend({
     channel.get('users').addObject(currentUser);
     channel.save();
   },
-  
+
   actions: {
     createUser(name) {
       this.store.createRecord('user', { name }).save().then((user) => {
@@ -27,8 +28,20 @@ export default Route.extend({
       });
     },
 
-    logout() {
+    addStory() {
+      this.store.createRecord('story').save().then((story) => {
+        let channel = get(this, 'controller.model');
+        channel.set('currentStory', story).save();
+      });
+    },
+
+    leaveChannel() {
+      let currentUser = get(this, 'session.currentUser');
+      let channel = get(this, 'controller.model');
+      channel.get('users').removeObject(currentUser);
+      channel.save();
       get(this, 'session').close();
+
     }
   }
 });

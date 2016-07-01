@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 const {
   Component,
-  computed,
   get,
   inject: { service }
 } = Ember;
@@ -12,8 +11,8 @@ export default Component.extend({
   classNames: 'sc-channel-users',
 
   actions: {
-    leaveChannel(user) {
-
+    leaveChannel() {
+      return get(this, 'onLeaveChannel')();
     }
   }
 });
