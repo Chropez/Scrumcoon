@@ -2,16 +2,46 @@
 
   {{#card.title as |title|}}
     {{#title.text as |text|}}
-       {{#text.headline}}Stories{{/text.headline}}
+       {{#text.headline}}{{story.title}}{{/text.headline}}
     {{/title.text}}
   {{/card.title}}
-
-  {{#card.content}}
-
-  {{/card.content}}
-
-  {{#card.actions}}
-    {{#paper-button primary=true raised=true}}Add{{/paper-button}}
+  {{#card.actions class="layout-row layout-align-start-center" as |actions|}}
+    <div class="current-votes">
+      Votes {{currentVotes}}/{{users}}
+    </div>
+    {{#paper-button class="hide"}}dummybutton{{/paper-button}}
+    {{#actions.icons}}
+      {{#paper-button raised=true onClick=(action "resetStory")}}Restart{{/paper-button}}
+      {{#unless story.isClosed}}
+        {{#paper-button raised=true primary=true onClick=(action "closeVoting")}}Show all votes{{/paper-button}}
+      {{/unless}}
+    {{/actions.icons}}
   {{/card.actions}}
 
+  {{#card.content}}
+    {{#if story.isClosed}}
+      {{!-- SHOW ALL USERS VOTES --}}
+
+      <div class="user-vote-cards">
+        {{#each story.votes as |vote|}}
+
+          {{#paper-card as |card|}}
+           {{#card.title as |title|}}
+             {{title.media size="sm" src=vote.user.avatar alt="Tomster" title="Tomster"}}
+             {{#title.text as |text|}}
+               {{#text.headline}}
+                 <div>{{vote.user.name}} <small>voted</small></div>
+                 <div>
+                   {{sc-vote-card value=vote.value}}
+                 </div>
+               {{/text.headline}}
+             {{/title.text}}
+           {{/card.title}}
+          {{/paper-card}}
+        {{/each}}
+      </div>
+    {{else}}
+      {{sc-vote onVote=onVote userVote=userVote}}
+    {{/if}}
+  {{/card.content}}
 {{/paper-card}}

@@ -17,8 +17,17 @@ export default Route.extend({
       if (!isEmpty(currentUser)) {
         users.pushObject(currentUser);
       }
-      this.store.createRecord('channel', { name: 'new-channel', users }).save().then((channel) => {
-        this.transitionTo('channel', channel.id);
+
+      this.store.createRecord('story', { title: 'Story 1' }).save().then((currentStory) => {
+        let stories = [currentStory];
+        this.store.createRecord('channel', {
+          name: 'Spring #',
+          users,
+          stories,
+          currentStory
+        }).save().then((channel) => {
+          this.transitionTo('channel', channel.id);
+        });
       });
     }
   }

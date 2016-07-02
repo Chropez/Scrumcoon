@@ -1,0 +1,35 @@
+.sc-channel-story {
+  md-card-actions {
+    padding: 15px;
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+  }
+
+  .user-vote-cards {
+    border-radius: 50px;
+
+    md-card-title-text {
+      margin-left: 15px;
+    }
+
+    md-card-title-media img {
+      border-radius: 50px;
+    }
+
+    .md-headline {
+      display: flex;
+      justify-content: space-between;
+      height: 100%;
+      align-items: center;
+    }
+  }
+
+  .user-vote-cards {
+    .sc-vote-card {
+      height: 80px;
+      width: 55px;
+      margin-top: -30px;
+      margin-bottom: -20px;
+    }
+  }
+}

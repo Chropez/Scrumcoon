@@ -4,5 +4,7 @@ import { hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
   title: attr('string'),
-  votes: hasMany()
+  votes: hasMany(),
+  isClosed: attr('boolean'),
+  decision: attr('string')
 });

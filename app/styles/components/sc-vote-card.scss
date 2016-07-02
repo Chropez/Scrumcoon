@@ -1,0 +1,61 @@
+.sc-vote-card {
+  height: 130px;
+  width: 90px;
+  background: gray;
+  margin: 10px;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  md-card {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  md-card-content {
+    height: 100%;
+    font-size: 30px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+  }
+
+  md-icon {
+    width: 30px;
+    font-size: 30px;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  md-card.active {
+    border: 4px SOLID #3a3a5f;
+  }
+
+
+  @media (max-width: 599px) {
+    height: 79px;
+    width: 55px;
+
+    md-card-content {
+      font-size: 20px;
+    }
+
+    md-icon {
+      width: 20px;
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width:959px) and (min-width:600px) {
+    height: 108px;
+    width: 75px;
+
+    md-card-content {
+      font-size: 25px;
+    }
+
+    md-icon {
+      width: 25px;
+      font-size: 25px;
+    }
+  }
+}

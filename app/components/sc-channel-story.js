@@ -1,4 +1,21 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+const {
+  Component,
+  computed: { alias },
+  get
+} = Ember;
+
+export default Component.extend({
+  classNames: 'sc-channel-story',
+  currentVotes: alias('story.votes.length'),
+
+  actions: {
+    closeVoting() {
+      get(this, 'onCloseVoting')();
+    },
+    resetStory() {
+      get(this, 'onResetStory')();
+    }
+  }
 });

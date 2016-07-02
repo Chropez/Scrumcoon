@@ -3,6 +3,9 @@
 @import './application/index';
 
 @import './components/sc-channel-users';
+@import './components/sc-channel-story';
+@import './components/sc-vote';
+@import './components/sc-vote-card';
 
 body {
   background: #f8f8f8;

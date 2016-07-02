@@ -1,0 +1,6 @@
+{{#each voteCards as |value index|}}
+  {{sc-vote-card
+    value=value
+    onSelect=(action "vote")
+    isSelected=(eq userVote.value value)}}
+{{/each}}
