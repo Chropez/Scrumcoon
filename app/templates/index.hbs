@@ -8,16 +8,14 @@
     {{/card.title}}
 
     {{#card.content}}
-      {{#paper-button class="inline-with-button-input" primary=true raised=true onClick=(route-action "createRoom")}}Start a new planning session{{/paper-button}}
+      {{#paper-button class="inline-with-button-input" primary=true raised=true onClick=(route-action "createChannel")}}Start a new planning session{{/paper-button}}
       <div style="margin:15px 12px 8px">
-        <label for="">Or join an existing room</label>
+        <label for="">Or join an existing session</label>
       </div>
       <div style="margin-left:12px">
-        {{paper-input class="inline-with-button-input" flex=80 label="Room-Id" value=room onChange=(action (mut room))}}
-        {{#paper-button raised=true onClick=(route-action "joinRoom") class=""}}Join{{/paper-button}}
+        {{paper-input class="inline-with-button-input" flex=80 label="Session-Id" value=channel onChange=(action (mut channel))}}
+        {{#paper-button raised=true onClick=(route-action "joinChannel" channel) class=""}}Join{{/paper-button}}
       </div>
     {{/card.content}}
-
-
   {{/paper-card}}
 </div>

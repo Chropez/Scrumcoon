@@ -11,7 +11,7 @@ const {
 export default Route.extend({
   session: service(),
   actions: {
-    createRoom() {
+    createChannel() {
       let currentUser = get(this, 'session.currentUser');
       let users = A();
       if (!isEmpty(currentUser)) {
@@ -20,14 +20,24 @@ export default Route.extend({
 
       this.store.createRecord('story', { title: 'Story 1' }).save().then((currentStory) => {
         let stories = [currentStory];
-        this.store.createRecord('channel', {
-          name: 'Spring #',
+        let channel = this.store.createRecord('channel', {
+          name: 'Sprint #',
           users,
           stories,
           currentStory
-        }).save().then((channel) => {
-          this.transitionTo('channel', channel.id);
         });
+        channel.save().then(() => {
+          this.transitionTo('channel', channel);
+        });
+      });
+    },
+
+    joinChannel(channelId) {
+      this.store.findRecord('channel', channelId).then((channel) => {
+        this.set('controller.channel', '');
+        this.transitionTo('channel', channel);
+      }).catch(() => {
+        alert('Couldn\'t find the session with that Id.');
       });
     }
   }

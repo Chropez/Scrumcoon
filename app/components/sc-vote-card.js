@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const {
   Component,
-  computed: { notEmpty }
+  computed: { notEmpty },
   get
 } = Ember;
 

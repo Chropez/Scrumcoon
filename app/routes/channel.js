@@ -9,8 +9,8 @@ const {
 
 export default Route.extend({
   session: service(),
-  model({ channel }) {
-    return this.store.findRecord('channel', channel );
+  model({ channel_id }) {
+    return this.store.findRecord('channel', channel_id );
   },
 
   joinChannel() {

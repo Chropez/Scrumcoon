@@ -1,17 +1,18 @@
 {{#paper-card class="layout layout-align-center-center flex-100" as |card|}}
   {{#card.title as |title|}}
-    {{#title.text as |text|}}
+    {{#title.text class="layout layout-align-center-center"  as |text|}}
        {{#text.headline}}{{model.name}}{{/text.headline}}
+       {{#text.subhead class="channel-subheader"}}Session Id: {{model.id}}{{/text.subhead}}
     {{/title.text}}
   {{/card.title}}
 {{/paper-card}}
 
 {{#if session.currentUser}}
-    <div class="channel-card channel-card--history layout-row layout-xs-column layout-gt-xs-align-center-center flex">
+    <div class="channel-card layout-row layout-wrap layout-gt-xs-align-center-center">
       {{#if (contains session.currentUser.id (map-by "id" model.users))}}
       {{!-- If the logged in user is the channels userlist --}}
         {{sc-channel-story
-          class="flex-xs-100 flex-gt-xs-70 flex-gt-md860"
+          class="flex flex-xs-100 flex-gt-xs-70 flex-gt-md-80 pos-rel"
           story=model.currentStory
           users=model.users.length
           onVote=(route-action "vote")
@@ -21,7 +22,7 @@
       {{else}}
 
         {{!-- Logged in user not in channel list --}}
-        {{#paper-card class="flex-xs-100 flex-gt-xs-70 flex-gt-md-80" as |card|}}
+        {{#paper-card class="flex flex-xs-100 flex-gt-xs-70 flex-gt-md-80 pos-rel" as |card|}}
           {{#card.content}}
             {{#paper-button
               raised=true
@@ -34,14 +35,14 @@
         {{/paper-card}}
       {{/if}}
       {{sc-channel-users
-        class="flex-xs-100 flex-gt-xs-30 flex-gt-md-20"
+        class="flex flex-xs-100 flex-gt-xs-30 flex-gt-md-20 pos-rel"
         users=model.users
         onLeaveChannel=(route-action "leaveChannel")}}
     </div>
 {{else}}
   {{!-- When the user isn't logged in --}}
   <div class="layout layout-align-center-center">
-    {{#paper-card class="flex-xs-100 flex-gt-xs-70 flex-gt-md-80" as |card|}}
+    {{#paper-card class="flex-xs-100 flex-gt-xs-70 flex-gt-md-80 pos-rel" as |card|}}
       {{#card.title as |title|}}
         {{#title.text as |text|}}
            {{#text.headline}}Join this board{{/text.headline}}

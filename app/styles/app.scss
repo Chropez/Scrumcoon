@@ -1,11 +1,16 @@
+$primary: "deep-purple";
+$accent: "pink";
+
 @import 'ember-paper';
 @import './application';
 @import './application/index';
+@import './channel.scss';
 
 @import './components/sc-channel-users';
 @import './components/sc-channel-story';
 @import './components/sc-vote';
 @import './components/sc-vote-card';
+// $warn: "pink";
 
 body {
   background: #f8f8f8;
