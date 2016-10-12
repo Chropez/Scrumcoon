@@ -9,13 +9,21 @@ const {
 
 export default Route.extend({
   session: service(),
+  channelService: service(),
+
   model({ channel_id }) {
-    return this.store.findRecord('channel', channel_id );
+    return this.store.findRecord('channel', channel_id).then((channel) => {
+      return channel;
+    }).catch(() => {
+      let channelService = this.get('channelService');
+      return channelService.createChannel({ id: channel_id });
+    });
+
   },
 
   joinChannel() {
-    let channel = get(this, 'controller.model');
-    let currentUser = get(this, 'session.currentUser');
+    let channel = this.get('controller.model');
+    let currentUser = this.get('session.currentUser');
     channel.get('users').addObject(currentUser);
     channel.save();
   },
@@ -23,26 +31,26 @@ export default Route.extend({
   actions: {
     createUser(name) {
       this.store.createRecord('user', { name }).save().then((user) => {
-        get(this, 'session').setCurrentUser(user);
+        this.get('session').setCurrentUser(user);
         this.joinChannel();
       });
     },
 
     addStory() {
       this.store.createRecord('story').save().then((story) => {
-        let channel = get(this, 'controller.model');
+        let channel = this.get('controller.model');
         channel.set('currentStory', story).save();
       });
     },
 
     leaveChannel() {
-      let currentUser = get(this, 'session.currentUser');
-      let channel = get(this, 'controller.model');
-      let hasVoted = get(this, 'controller.hasVoted');
+      let currentUser = this.get('session.currentUser');
+      let channel = this.get('controller.model');
+      let hasVoted = this.get('controller.hasVoted');
 
       if(hasVoted) {
-        let userVote = get(this, 'controller.userVote');
-        get(this, 'controller.model.currentStory').then((currentStory) => {
+        let userVote = this.get('controller.userVote');
+        this.get('controller.model.currentStory').then((currentStory) => {
           currentStory.get('votes').removeObject(userVote);
           currentStory.save().then(() => {
             userVote.destroyRecord();
@@ -53,7 +61,7 @@ export default Route.extend({
       channel.get('users').removeObject(currentUser);
       channel.save();
 
-      get(this, 'session').close();
+      this.get('session').close();
     },
 
     joinChannel() {
@@ -61,16 +69,16 @@ export default Route.extend({
     },
 
     vote(value) {
-      let user  = get(this, 'session.currentUser');
-      let hasVoted = get(this, 'controller.hasVoted');
+      let user  = this.get('session.currentUser');
+      let hasVoted = this.get('controller.hasVoted');
 
       if(hasVoted) {
-        let userVote = get(this, 'controller.userVote');
+        let userVote = this.get('controller.userVote');
         if (value) {
           userVote.set('value', value);
           userVote.save();
         } else {
-          get(this, 'controller.model.currentStory').then((currentStory) => {
+          this.get('controller.model.currentStory').then((currentStory) => {
             currentStory.get('votes').removeObject(userVote);
             currentStory.save().then(() => {
               userVote.destroyRecord();
@@ -78,7 +86,7 @@ export default Route.extend({
           });
         }
       } else {
-        get(this, 'controller.model.currentStory').then((currentStory) => {
+        this.get('controller.model.currentStory').then((currentStory) => {
           this.store.createRecord('vote', { value, user }).save().then((userVote) => {
             currentStory.get('votes').pushObject(userVote);
             currentStory.save();
@@ -88,14 +96,14 @@ export default Route.extend({
     },
 
     closeCurrentStory() {
-      get(this, 'controller.model.currentStory').then((currentStory) => {
+      this.get('controller.model.currentStory').then((currentStory) => {
         currentStory.set('isClosed', true);
         currentStory.save();
       });
     },
 
     resetCurrentStory() {
-      get(this, 'controller.model.currentStory').then((currentStory) => {
+      this.get('controller.model.currentStory').then((currentStory) => {
         let votes = get(currentStory, 'votes');
         let deletions = votes.map((vote) => {
           return vote.destroyRecord();

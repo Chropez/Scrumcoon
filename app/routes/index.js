@@ -1,34 +1,23 @@
 import Ember from 'ember';
 
 const {
-  A,
   get,
   inject: { service },
-  isEmpty,
   Route
 } = Ember;
 
 export default Route.extend({
   session: service(),
+  channelService: service(),
+
   actions: {
     createChannel() {
-      let currentUser = get(this, 'session.currentUser');
-      let users = A();
-      if (!isEmpty(currentUser)) {
-        users.pushObject(currentUser);
-      }
+      let channel = { name: 'Sprint #' };
+      let story = { title: 'Story 1' };
+      let channelService = get(this, 'channelService');
 
-      this.store.createRecord('story', { title: 'Story 1' }).save().then((currentStory) => {
-        let stories = [currentStory];
-        let channel = this.store.createRecord('channel', {
-          name: 'Sprint #',
-          users,
-          stories,
-          currentStory
-        });
-        channel.save().then(() => {
-          this.transitionTo('channel', channel);
-        });
+      channelService.createChannel(channel, story).then((channel) => {
+        this.transitionTo('channel', channel);
       });
     },
 
