@@ -27,15 +27,15 @@
 
           {{#paper-card as |card|}}
            {{#card.title as |title|}}
-             {{title.media size="sm" src=vote.user.avatar alt="Tomster" title="Tomster"}}
+             {{title.media size="sm" src=vote.user.avatar alt="User avatar" title="Avatar"}}
              {{#title.text as |text|}}
                {{#text.headline}}
                  <div>{{vote.user.name}} <small>voted</small></div>
-                 <div>
-                   {{sc-vote-card value=vote.value}}
-                 </div>
                {{/text.headline}}
              {{/title.text}}
+             {{#title.media size="sm" class="user-voted-card"}}
+               {{sc-vote-card value=vote.value}}
+             {{/title.media}}
            {{/card.title}}
           {{/paper-card}}
         {{/each}}

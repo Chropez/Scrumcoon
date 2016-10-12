@@ -24,12 +24,12 @@
     }
   }
 
-  .user-vote-cards {
+  .user-vote-cards .user-voted-card{
+    width: 55px;
     .sc-vote-card {
       height: 80px;
       width: 55px;
-      margin-top: -30px;
-      margin-bottom: -20px;
+      margin: 0;
     }
   }
 }

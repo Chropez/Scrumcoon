@@ -42,8 +42,7 @@ export default Route.extend({
 
       if(hasVoted) {
         let userVote = get(this, 'controller.userVote');
-        let currentStoryId = get(this, 'controller.model.currentStory.id');
-        this.store.findRecord('story', currentStoryId).then((currentStory) => {
+        get(this, 'controller.model.currentStory').then((currentStory) => {
           currentStory.get('votes').removeObject(userVote);
           currentStory.save().then(() => {
             userVote.destroyRecord();
@@ -64,7 +63,6 @@ export default Route.extend({
     vote(value) {
       let user  = get(this, 'session.currentUser');
       let hasVoted = get(this, 'controller.hasVoted');
-      let currentStoryId = get(this, 'controller.model.currentStory.id');
 
       if(hasVoted) {
         let userVote = get(this, 'controller.userVote');
@@ -72,7 +70,7 @@ export default Route.extend({
           userVote.set('value', value);
           userVote.save();
         } else {
-          this.store.findRecord('story', currentStoryId).then((currentStory) => {
+          get(this, 'controller.model.currentStory').then((currentStory) => {
             currentStory.get('votes').removeObject(userVote);
             currentStory.save().then(() => {
               userVote.destroyRecord();
@@ -80,7 +78,7 @@ export default Route.extend({
           });
         }
       } else {
-        this.store.findRecord('story', currentStoryId).then((currentStory) => {
+        get(this, 'controller.model.currentStory').then((currentStory) => {
           this.store.createRecord('vote', { value, user }).save().then((userVote) => {
             currentStory.get('votes').pushObject(userVote);
             currentStory.save();
@@ -90,16 +88,14 @@ export default Route.extend({
     },
 
     closeCurrentStory() {
-      let currentStoryId = get(this, 'controller.model.currentStory.id');
-      this.store.findRecord('story', currentStoryId).then((currentStory) => {
+      get(this, 'controller.model.currentStory').then((currentStory) => {
         currentStory.set('isClosed', true);
         currentStory.save();
       });
     },
 
     resetCurrentStory() {
-      let currentStoryId = get(this, 'controller.model.currentStory.id');
-      this.store.findRecord('story', currentStoryId).then((currentStory) => {
+      get(this, 'controller.model.currentStory').then((currentStory) => {
         let votes = get(currentStory, 'votes');
         let deletions = votes.map((vote) => {
           return vote.destroyRecord();
