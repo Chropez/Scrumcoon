@@ -18,6 +18,30 @@
         <div class="user-name {{if (eq channelUser.user.id session.currentUser.id) "active"}}">
           {{channelUser.user.name}}
 
+
+          {{#paper-menu width=4 as |menu|}}
+              {{#paper-button onClick=(action "toggleMenu" target=menu) iconButton=true}}{{paper-icon "keyboard_arrow_down" class="md-menu-origin"}}{{/paper-button}}
+            {{else}}
+
+              {{#paper-menu-item onClick=(action "toggleObserver" channelUser)}}
+                {{#if channelUser.isObserver}}
+                  {{paper-icon "visibility" class="md-menu-align-target"}}
+                  <span>This is disabled.</span>
+                {{else}}
+
+                {{/if}}
+              {{/paper-menu-item}}
+              {{/if}}
+
+              {{#paper-menu-item onClick="openSomething"}}
+                {{paper-icon "adb" class="md-menu-align-target"}}
+                  <span>This is disabled.</span>
+              {{/paper-menu-item}}
+
+            {{/paper-menu}}
+
+
+
           {{#if (eq channelUser.user.id session.currentUser.id)}}
             {{#paper-button onClick=(action "leaveChannel" user) iconButton=true}}{{paper-icon "clear"}}{{/paper-button}}
           {{/if}}
