@@ -7,15 +7,18 @@
   {{/card.title}}
 
   {{#card.content}}
-    {{#each users as |user|}}
+    {{#each channelUsers as |channelUser|}}
       <div class="user-container">
         <div class="user-avatar">
-          <img src="{{user.avatar}}">
+          {{#if channelUser.isAdmin}}
+            <img id="crown" src="/img/crown.png">
+          {{/if}}
+          <img src="{{channelUser.user.avatar}}">
         </div>
-        <div class="user-name {{if (eq user.id session.currentUser.id) "active"}}">
-          {{user.name}}
+        <div class="user-name {{if (eq channelUser.user.id session.currentUser.id) "active"}}">
+          {{channelUser.user.name}}
 
-          {{#if (eq user.id session.currentUser.id)}}
+          {{#if (eq channelUser.user.id session.currentUser.id)}}
             {{#paper-button onClick=(action "leaveChannel" user) iconButton=true}}{{paper-icon "clear"}}{{/paper-button}}
           {{/if}}
         </div>

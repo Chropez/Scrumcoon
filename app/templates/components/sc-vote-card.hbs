@@ -1,14 +1,9 @@
-{{#paper-card
-  class=(if isSelected "active")
-  as |card|}}
+{{#paper-card class=(if isSelected "active") as |card|}}
   {{#card.content class="layout layout-align-center-center"}}
-
     {{#if (eq value "coffee")}}
       {{paper-icon "local-cafe"}}
     {{else}}
       {{value}}
     {{/if}}
-
-
   {{/card.content}}
 {{/paper-card}}

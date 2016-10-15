@@ -4,7 +4,7 @@ import { belongsTo, hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
   name: attr('string'),
-  users: hasMany(),
+  channelUsers: hasMany(),
   stories: hasMany(),
   currentStory: belongsTo('story')
 });

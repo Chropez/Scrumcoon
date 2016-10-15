@@ -1,15 +1,15 @@
 import Ember from 'ember';
 
 const {
-  get,
+  computed: { alias },
   inject: { service },
-  Route,
-  RSVP: { all }
+  Route
 } = Ember;
 
 export default Route.extend({
   session: service(),
   channelService: service(),
+  channel: alias('controller.model'),
 
   model({ channel_id }) {
     return this.store.findRecord('channel', channel_id).then((channel) => {
@@ -18,104 +18,59 @@ export default Route.extend({
       let channelService = this.get('channelService');
       return channelService.createChannel({ id: channel_id });
     });
-
   },
 
-  joinChannel() {
-    let channel = this.get('controller.model');
-    let currentUser = this.get('session.currentUser');
-    channel.get('users').addObject(currentUser);
-    channel.save();
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('session', this.get('session'));
   },
 
   actions: {
     createUser(name) {
       this.store.createRecord('user', { name }).save().then((user) => {
         this.get('session').setCurrentUser(user);
-        this.joinChannel();
+
+        let channel = this.get('channel');
+        let isAdmin = false;
+        if (channel.get('channelUsers.length') > 0 ) {
+          isAdmin = true;
+        }
+
+        this.get('channelService').addCurrentUser(channel, isAdmin);
       });
     },
 
     addStory() {
       this.store.createRecord('story').save().then((story) => {
-        let channel = this.get('controller.model');
+        let channel = this.get('channel');
         channel.set('currentStory', story).save();
       });
     },
 
     leaveChannel() {
       let currentUser = this.get('session.currentUser');
-      let channel = this.get('controller.model');
-      let hasVoted = this.get('controller.hasVoted');
+      let currentUserId = currentUser.get('id');
+      let channel = this.get('channel');
+      let userVote = this.get('channel.currentStory.votes').findBy('user.id', currentUserId);
+      let channelUser = this.get('channel.channelUsers').findBy('user.id', currentUserId);
 
-      if(hasVoted) {
-        let userVote = this.get('controller.userVote');
-        this.get('controller.model.currentStory').then((currentStory) => {
-          currentStory.get('votes').removeObject(userVote);
-          currentStory.save().then(() => {
-            userVote.destroyRecord();
-          });
+      if (userVote) {
+        let currentStory = this.get('votes').removeObject(userVote);
+        currentStory.save().then(() => {
+          userVote.destroyRecord();
         });
       }
-
-      channel.get('users').removeObject(currentUser);
+      
+      channel.get('channelUsers').removeObject(channelUser);
       channel.save();
+      channelUser.destroyRecord();
 
       this.get('session').close();
     },
 
     joinChannel() {
-      this.joinChannel();
-    },
-
-    vote(value) {
-      let user  = this.get('session.currentUser');
-      let hasVoted = this.get('controller.hasVoted');
-
-      if(hasVoted) {
-        let userVote = this.get('controller.userVote');
-        if (value) {
-          userVote.set('value', value);
-          userVote.save();
-        } else {
-          this.get('controller.model.currentStory').then((currentStory) => {
-            currentStory.get('votes').removeObject(userVote);
-            currentStory.save().then(() => {
-              userVote.destroyRecord();
-            });
-          });
-        }
-      } else {
-        this.get('controller.model.currentStory').then((currentStory) => {
-          this.store.createRecord('vote', { value, user }).save().then((userVote) => {
-            currentStory.get('votes').pushObject(userVote);
-            currentStory.save();
-          });
-        });
-      }
-    },
-
-    closeCurrentStory() {
-      this.get('controller.model.currentStory').then((currentStory) => {
-        currentStory.set('isClosed', true);
-        currentStory.save();
-      });
-    },
-
-    resetCurrentStory() {
-      this.get('controller.model.currentStory').then((currentStory) => {
-        let votes = get(currentStory, 'votes');
-        let deletions = votes.map((vote) => {
-          return vote.destroyRecord();
-        });
-
-        all(deletions).then(() => {
-          currentStory.set('votes', []);
-          currentStory.set('isClosed', false);
-          currentStory.set('decision', null);
-          return currentStory.save();
-        });
-      });
+      let channel = this.get('channel');
+      this.get('channelService').addCurrentUser(channel);
     }
   }
 });

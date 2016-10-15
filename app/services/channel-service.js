@@ -3,7 +3,6 @@ import Ember from 'ember';
 const {
   A,
   assign,
-  get,
   inject: { service },
   isEmpty,
   Service
@@ -14,25 +13,59 @@ export default Service.extend({
   store: service(),
 
   createChannel(channelObject = {}, storyObject = {}) {
-    let currentUser = get(this, 'session.currentUser');
-    let users = A();
+    let currentUser = this.get('session.currentUser');
+    let channelUsers = A();
     let store = this.get('store');
 
+    let newChannelUser;
     if (!isEmpty(currentUser)) {
-      users.pushObject(currentUser);
+      newChannelUser = store.createRecord('channelUser', {
+        user: currentUser,
+        isAdmin: true,
+        isObserver: false
+      });
+      channelUsers.pushObject(newChannelUser);
     }
 
+    let newStory = store.createRecord('story', storyObject);
+    var channelAttrs = assign(channelObject, {
+      channelUsers,
+      stories: [newStory],
+      currentStory: newStory
+    });
+    let newChannel = store.createRecord('channel', channelAttrs);
 
-    let newChannel = store.createRecord('story', storyObject);
-    return newChannel.save().then((currentStory) => {
-      let stories = [currentStory];
-      var mergedChannelObject = assign(channelObject, {
-        users,
-        stories,
-        currentStory
+    if (newChannelUser) {
+      return newChannelUser.save().then(() => {
+        return newStory.save().then(() => {
+          return newChannel.save();
+        });
       });
+    }
 
-      let channel = store.createRecord('channel', mergedChannelObject);
+    return newStory.save().then(() => {
+      return newChannel.save();
+    });
+  },
+
+  addCurrentUser(channel, isAdmin, isObserver) {
+    let user = this.get('session.currentUser');
+    return this.addUser(channel, user, isAdmin, isObserver);
+  },
+
+  addUser(channel, user, isAdmin = false, isObserver = false) {
+    if (isEmpty(user)) {
+      console.error(`Can't add current user to channel because the user is not logged in`);
+      return;
+    }
+
+    let store = this.get('store');
+    let channelUser = store.createRecord('channelUser', {
+      user, isAdmin, isObserver
+    });
+
+    channel.get('channelUsers').pushObject(channelUser);
+    return channelUser.save().then(() => {
       return channel.save();
     });
   }

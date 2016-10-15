@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 const {
   Component,
-  get,
   inject: { service }
 } = Ember;
 
@@ -12,7 +11,7 @@ export default Component.extend({
 
   actions: {
     leaveChannel() {
-      return get(this, 'onLeaveChannel')();
+      return this.get('onLeaveChannel')();
     }
   }
 });
