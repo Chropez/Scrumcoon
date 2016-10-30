@@ -9,7 +9,7 @@
   .user-avatar {
     position: relative;
     width: 40px;
-    padding: 10px 15px 10px 0;
+    margin: 7px 15px 3px 0px;
     .avatar {
       width: 100%;
       border-radius: 30px;
@@ -30,15 +30,15 @@
 
   .crown {
     position: absolute;
-    width: 87%;
-    top: 1px;
-    left: -5px;
+    width: 130%;
+    top: -7px;
+    left: -4px;
   }
 
   .sunglasses {
     position: absolute;
-    width: 68%;
-    top: 10px;
+    width: 100%;
+    top: 0px;
     left: 0px;
   }
 

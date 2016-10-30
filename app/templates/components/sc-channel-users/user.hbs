@@ -8,7 +8,7 @@
     {{/if}}
     <img class="avatar" src="{{channelUser.user.avatar}}">
   </div>
-  <div class="user-name {{if currentUser.isMe "active"}}">
+  <div class="user-name {{if channelUser.isMe "active"}}">
     {{channelUser.user.name}}
     {{#if channelUser.isAdmin}}
       <small>(admin)</small>
