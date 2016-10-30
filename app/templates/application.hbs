@@ -1,10 +1,10 @@
-{{#paper-toolbar}}
-   {{#paper-toolbar-tools}}
+{{#paper-toolbar as |toolbar|}}
+   {{#toolbar.tools}}
      <span class="flex"></span>
      <h2>
        {{#link-to 'application'}}SCRUMCOON{{/link-to}}
      </h2>
      <span class="flex"></span>
-   {{/paper-toolbar-tools}}
+   {{/toolbar.tools}}
  {{/paper-toolbar}}
 {{outlet}}

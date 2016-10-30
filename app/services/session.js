@@ -11,7 +11,6 @@ const USER_ID_KEY = 'sc_user_id_key';
 
 export default Service.extend({
   store: service(),
-
   currentUser: null,
 
   setCurrentUser(user) {
@@ -23,7 +22,6 @@ export default Service.extend({
     }
 
     localStorage.setItem(USER_ID_KEY, get(user, 'id'));
-
   },
 
   fetch() {
@@ -41,7 +39,6 @@ export default Service.extend({
       // No user was found
       this.close();
     });
-
   },
 
   close() {

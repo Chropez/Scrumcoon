@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 const {
   Component,
+  computed: { filterBy },
   inject: { service }
 } = Ember;
 
@@ -9,9 +10,12 @@ export default Component.extend({
   session: service(),
   classNames: 'sc-channel-users',
 
+  voters: filterBy('channelUsers', 'isObserver', false),
+  observers: filterBy('channelUsers', 'isObserver', true),
+
   actions: {
-    leaveChannel() {
-      return this.get('onLeaveChannel')();
+    kickUser(channelUser) {
+      this.get('onKickUser')(channelUser);
     }
   }
 });

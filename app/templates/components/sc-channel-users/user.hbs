@@ -1,0 +1,73 @@
+<div class="user-container">
+  <div class="user-avatar">
+    {{#if channelUser.isAdmin}}
+      <img class="crown" src="/img/crown.png">
+    {{/if}}
+    {{#if channelUser.isObserver}}
+      <img class="sunglasses" src="/img/sunglasses.png">
+    {{/if}}
+    <img class="avatar" src="{{channelUser.user.avatar}}">
+  </div>
+  <div class="user-name {{if currentUser.isMe "active"}}">
+    {{channelUser.user.name}}
+    {{#if channelUser.isAdmin}}
+      <small>(admin)</small>
+    {{/if}}
+  </div>
+
+  {{#if (or isAdmin channelUser.isMe)}}
+    <div class="user-actions">
+      {{#paper-menu isOpen=menuFourIsOpen position="target-right target" as |menu|}}
+        {{#menu.trigger}}
+          {{#paper-button onClick=null iconButton=true}}
+            {{paper-icon "keyboard_arrow_down" class="md-menu-origin"}}
+          {{/paper-button}}
+        {{/menu.trigger}}
+
+        {{#menu.content as |content|}}
+          {{#if isAdmin}}
+            {{#content.menu-item onClick=(action "toggleAdmin" channelUser)}}
+              {{#if channelUser.isAdmin}}
+                <span>Demote Admin</span>
+              {{else}}
+                <span>Promote to Admin</span>
+              {{/if}}
+            {{/content.menu-item}}
+          {{/if}}
+
+          {{#if (or channelUser.isMe isAdmin)}}
+            {{#content.menu-item onClick=(action "toggleObserver" channelUser)}}
+              {{#if channelUser.isObserver}}
+                <span>
+                  {{#if channelUser.isMe}}
+                    Become Voter
+                  {{else}}
+                    Make Voter
+                  {{/if}}
+                </span>
+              {{else}}
+                <span>
+                  {{#if channelUser.isMe}}
+                    Become Observer
+                  {{else}}
+                    Make Observer
+                  {{/if}}
+                </span>
+              {{/if}}
+            {{/content.menu-item}}
+          {{/if}}
+
+          {{#if (or channelUser.isMe isAdmin)}}
+            {{#content.menu-item onClick=(action "kick" channelUser)}}
+              {{#if channelUser.isMe}}
+                Leave session
+              {{else}}
+                Kick from session
+              {{/if}}
+            {{/content.menu-item}}
+          {{/if}}
+        {{/menu.content}}
+      {{/paper-menu}}
+    </div>
+  {{/if}}
+</div>

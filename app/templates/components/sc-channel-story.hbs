@@ -11,12 +11,14 @@
       Votes {{currentVotes}}/{{users}}
     </div>
     {{#paper-button class="hide"}}dummybutton{{/paper-button}}
-    {{#actions.icons}}
-      {{#paper-button raised=true onClick=(action "resetStory")}}Restart{{/paper-button}}
-      {{#unless story.isClosed}}
-        {{#paper-button raised=true primary=true onClick=(action "closeVoting")}}Show all votes{{/paper-button}}
-      {{/unless}}
-    {{/actions.icons}}
+    {{#if currentChannelUser.isAdmin}}
+      {{#actions.icons}}
+        {{#paper-button raised=true onClick=(action "resetStory")}}Restart{{/paper-button}}
+        {{#unless story.isClosed}}
+          {{#paper-button raised=true primary=true onClick=(action "closeVoting")}}Show all votes{{/paper-button}}
+        {{/unless}}
+      {{/actions.icons}}
+    {{/if}}
   {{/card.actions}}
 
   {{#card.content}}
@@ -26,10 +28,10 @@
         {{#each story.votes as |vote|}}
           {{#paper-card as |card|}}
            {{#card.title as |title|}}
-             {{title.media size="sm" src=vote.user.avatar alt="User avatar" title="Avatar"}}
+             {{title.media size="sm" src=vote.channelUser.user.avatar alt="User avatar" title="Avatar"}}
              {{#title.text as |text|}}
                {{#text.headline}}
-                 <div>{{vote.user.name}} <small>voted</small></div>
+                 <div>{{vote.channelUser.user.name}} <small>voted</small></div>
                {{/text.headline}}
              {{/title.text}}
              {{#title.media size="sm" class="user-voted-card"}}
@@ -39,7 +41,7 @@
           {{/paper-card}}
         {{/each}}
       </div>
-    {{else}}
+    {{else if (and (not story.isClosed) (not currentChannelUser.isObserver))}}
       {{!-- LET USERS VOTE --}}
       {{sc-vote onVote=(action 'vote') userVote=userVote}}
     {{/if}}

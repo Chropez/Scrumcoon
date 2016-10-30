@@ -25,18 +25,35 @@ export default Route.extend({
     controller.set('session', this.get('session'));
   },
 
+  joinChannel () {
+    let channel = this.get('channel');
+    let channelUsers = channel.get('channelUsers');
+
+    let isAdmin = false;
+    if (channelUsers.get('length') === 0 || !channelUsers.isAny('isAdmin', true)) {
+      isAdmin = true;
+    }
+
+    this.get('channelService').addCurrentUser(channel, isAdmin);
+  },
+
+  removeUserVotes(channelUser) {
+    let channelUserId = channelUser.get('id');
+    let userVote = this.get('channel.currentStory.votes').findBy('channelUser.user.id', channelUserId);
+
+    if (userVote) {
+      let currentStory = this.get('votes').removeObject(userVote);
+      currentStory.save().then(() => {
+        userVote.destroyRecord();
+      });
+    }
+  },
+
   actions: {
     createUser(name) {
       this.store.createRecord('user', { name }).save().then((user) => {
         this.get('session').setCurrentUser(user);
-
-        let channel = this.get('channel');
-        let isAdmin = false;
-        if (channel.get('channelUsers.length') > 0 ) {
-          isAdmin = true;
-        }
-
-        this.get('channelService').addCurrentUser(channel, isAdmin);
+        this.joinChannel();
       });
     },
 
@@ -47,30 +64,25 @@ export default Route.extend({
       });
     },
 
-    leaveChannel() {
-      let currentUser = this.get('session.currentUser');
-      let currentUserId = currentUser.get('id');
+    kickUser(channelUser) {
       let channel = this.get('channel');
-      let userVote = this.get('channel.currentStory.votes').findBy('user.id', currentUserId);
-      let channelUser = this.get('channel.channelUsers').findBy('user.id', currentUserId);
 
-      if (userVote) {
-        let currentStory = this.get('votes').removeObject(userVote);
-        currentStory.save().then(() => {
-          userVote.destroyRecord();
+      this.removeUserVotes(channelUser);
+
+      channel.reload().then((channel) => {
+        channel.get('channelUsers').removeObject(channelUser);
+        channel.save().then(() => {
+          //channelUser.destroyRecord();
+          if (channelUser.get('isMe')) {
+            this.get('session.currentUser').destroy();
+            this.get('session').close();
+          }
         });
-      }
-      
-      channel.get('channelUsers').removeObject(channelUser);
-      channel.save();
-      channelUser.destroyRecord();
-
-      this.get('session').close();
+      });
     },
 
     joinChannel() {
-      let channel = this.get('channel');
-      this.get('channelService').addCurrentUser(channel);
+      this.joinChannel();
     }
   }
 });

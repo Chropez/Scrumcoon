@@ -19,15 +19,15 @@ export default Component.extend({
   users: 0,
   currentVotes: alias('story.votes.length'),
 
-  userVote: computed('story.votes.@each.value', 'session.currentUser.id', function() {
+  userVote: computed('story.votes.@each.value', 'currentChannelUser.user.id', function() {
     let votes = this.get('story.votes');
-    let currentUser = this.get('session.currentUser');
+    let currentUserId = this.get('currentChannelUser.user.id');
 
-    if (!votes || !currentUser) {
+    if (!votes || !currentUserId) {
       return;
     }
 
-    return votes.findBy('user.id', currentUser.id);
+    return votes.findBy('channelUser.user.id', currentUserId);
   }),
 
   hasVoted: notEmpty('userVote'),
@@ -55,7 +55,6 @@ export default Component.extend({
     },
 
     vote(value) {
-      let user  = this.get('session.currentUser');
       let hasVoted = this.get('hasVoted');
       let story = this.get('story').get('content');
 
@@ -76,7 +75,8 @@ export default Component.extend({
       } else {
         // Create a new vote
         let store = this.get('store');
-        let vote = store.createRecord('vote', { value, user });
+        let channelUser = this.get('currentChannelUser');
+        let vote = store.createRecord('vote', { value, channelUser });
         story.get('votes').pushObject(vote);
         vote.save().then(() => {
           story.save();
