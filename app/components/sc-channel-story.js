@@ -5,6 +5,7 @@ const {
   computed,
   computed: {
     alias,
+    filterBy,
     notEmpty
   },
   inject: { service },
@@ -31,6 +32,8 @@ export default Component.extend({
   }),
 
   hasVoted: notEmpty('userVote'),
+
+  voters: filterBy('channelUsers', 'isObserver', false),
 
   actions: {
     closeVoting() {

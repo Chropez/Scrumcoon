@@ -46,4 +46,21 @@
     width: 30px;
   }
 
+  .label-voted {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    background: #dee3fc;
+    float: right;
+    position: relative;
+    top: 3px;
+  }
+
 }

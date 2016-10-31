@@ -14,7 +14,7 @@
         {{sc-channel-story
           class="flex flex-xs-100 flex-gt-xs-70 flex-gt-md-80 pos-rel"
           story=model.currentStory
-          users=model.channelUsers.length
+          channelUsers=model.channelUsers
           currentChannelUser=currentChannelUser
         }}
       {{else}}
@@ -34,6 +34,7 @@
         channelUsers=model.channelUsers
         onKickUser=(route-action "kickUser")
         currentChannelUser=currentChannelUser
+        votes=model.currentStory.votes
       }}
     </div>
 

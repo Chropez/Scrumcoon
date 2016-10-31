@@ -13,6 +13,11 @@
     {{#if channelUser.isAdmin}}
       <small>(admin)</small>
     {{/if}}
+    {{#if hasVoted}}
+      <div class="label-voted">
+        voted
+      </div>
+    {{/if}}
   </div>
 
   {{#if (or isAdmin channelUser.isMe)}}

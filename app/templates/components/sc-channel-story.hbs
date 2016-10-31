@@ -8,7 +8,7 @@
 
   {{#card.actions class="layout-row layout-align-start-center" as |actions|}}
     <div class="current-votes">
-      Votes {{currentVotes}}/{{users}}
+      Votes {{currentVotes}}/{{voters.length}}
     </div>
     {{#paper-button class="hide"}}dummybutton{{/paper-button}}
     {{#if currentChannelUser.isAdmin}}
