@@ -19,6 +19,7 @@ export default Component.extend({
   story: null,
   users: 0,
   currentVotes: alias('story.votes.length'),
+  isAdmin: alias('currentChannelUser.isAdmin'),
 
   userVote: computed('story.votes.@each.value', 'currentChannelUser.user.id', function() {
     let votes = this.get('story.votes');

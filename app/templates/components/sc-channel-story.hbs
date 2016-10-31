@@ -1,17 +1,23 @@
 {{#paper-card as |card|}}
-
-  {{#card.title as |title|}}
-    {{#title.text as |text|}}
-       {{#text.headline}}{{story.title}}{{/text.headline}}
-    {{/title.text}}
-  {{/card.title}}
+  {{#if (or story.title isAdmin)}}
+    {{#card.title as |title|}}
+      {{#title.text as |text|}}
+         {{#text.headline}}
+           {{#if isAdmin}}
+             {{story.title}}
+           {{else}}
+             {{paper-input flex=30 label="Story" value=story.title onChange=(action chan)}}
+           {{/if}}
+         {{/text.headline}}
+      {{/title.text}}
+    {{/card.title}}
 
   {{#card.actions class="layout-row layout-align-start-center" as |actions|}}
     <div class="current-votes">
       Votes {{currentVotes}}/{{voters.length}}
     </div>
     {{#paper-button class="hide"}}dummybutton{{/paper-button}}
-    {{#if currentChannelUser.isAdmin}}
+    {{#if isAdmin}}
       {{#actions.icons}}
         {{#paper-button raised=true onClick=(action "resetStory")}}Restart{{/paper-button}}
         {{#unless story.isClosed}}
