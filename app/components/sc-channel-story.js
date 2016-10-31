@@ -6,7 +6,8 @@ const {
   computed: {
     alias,
     filterBy,
-    notEmpty
+    notEmpty,
+    oneWay
   },
   inject: { service },
   RSVP: { all }
@@ -18,8 +19,11 @@ export default Component.extend({
   classNames: 'sc-channel-story',
   story: null,
   users: 0,
-  currentVotes: alias('story.votes.length'),
   isAdmin: alias('currentChannelUser.isAdmin'),
+  currentVotes: alias('story.votes.length'),
+
+  storyTitle: oneWay('story.title'),
+  isEditingStoryTitle: false,
 
   userVote: computed('story.votes.@each.value', 'currentChannelUser.user.id', function() {
     let votes = this.get('story.votes');

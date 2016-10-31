@@ -20,6 +20,10 @@ export default Route.extend({
     });
   },
 
+  afterModel(channel) {
+    return channel.get('channelUsers');
+  },
+
   setupController(controller, model) {
     this._super(controller, model);
     controller.set('session', this.get('session'));
@@ -83,6 +87,14 @@ export default Route.extend({
 
     joinChannel() {
       this.joinChannel();
+    },
+
+    saveStoryTitle() {
+
+    },
+
+    cancelStoryTitle() {
+
     }
   }
 });
