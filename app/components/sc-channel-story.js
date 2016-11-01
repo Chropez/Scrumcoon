@@ -10,7 +10,8 @@ const {
     oneWay
   },
   inject: { service },
-  RSVP: { all }
+  RSVP: { all },
+  run: { scheduleOnce }
 } = Ember;
 
 export default Component.extend({
@@ -90,6 +91,26 @@ export default Component.extend({
           story.save();
         });
       }
+    },
+
+    showEditStoryTitle() {
+      this.set('isEditingStoryTitle', true);
+
+      scheduleOnce('afterRender', () => {
+          this.$('.input__story-title input').focus();
+      });
+    },
+
+    saveStoryTitle() {
+      let story = this.get('story');
+      story.set('title', this.get('storyTitle'));
+      story.get('content').save();
+      this.set('isEditingStoryTitle', false);
+    },
+
+    cancelStoryTitle() {
+      this.set('storyTitle', this.get('story.title'));
+      this.set('isEditingStoryTitle', false);
     }
   }
 });

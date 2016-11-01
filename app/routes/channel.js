@@ -87,14 +87,6 @@ export default Route.extend({
 
     joinChannel() {
       this.joinChannel();
-    },
-
-    saveStoryTitle() {
-
-    },
-
-    cancelStoryTitle() {
-
     }
   }
 });

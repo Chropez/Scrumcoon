@@ -2,21 +2,33 @@
   {{#if (or story.title isAdmin)}}
     {{#card.title as |title|}}
       {{#title.text as |text|}}
-         {{#text.headline}}
-           {{#if isAdmin}}
-             {{#if isEditingStoryTitle}}
-               {{paper-input class="input__story-title" flex=30 label="Story" value=storyTitle onChange=(action (mut storyTitle))}}
-               {{#paper-button raised=true  primary=true onClick=(action "saveStoryTitle")}}Save{{/paper-button}}
-               {{#paper-button onClick=(action "cancelStoryTitle")}}Cancel{{/paper-button}}
-             {{else}}
-               <div {{action (toggle isEditingStoryTitle)}}>
-                 {{story.title}}
-               </div>
-             {{/if}}
-           {{else}}
-             {{story.title}}
-           {{/if}}
-         {{/text.headline}}
+        {{#text.headline}}
+          {{#if isAdmin}}
+            {{#if isEditingStoryTitle}}
+              {{paper-input class="input__story-title" flex=85 label="Story title" value=storyTitle onChange=(action (mut storyTitle))}}
+              <div class="input--actions">
+                {{#paper-button iconButton=true onClick=(action "saveStoryTitle")}}
+                  {{paper-icon "check-circle" size=30 primary=true}}
+                {{/paper-button}}
+                {{#paper-button iconButton=true onClick=(action "cancelStoryTitle")}}
+                  {{paper-icon "clear" size=28}}
+                {{/paper-button}}
+              </div>
+              {{!-- {{#paper-button raised=true primary=true onClick=(action "saveStoryTitle")}}Save{{/paper-button}}
+              {{#paper-button onClick=(action "cancelStoryTitle")}}Cancel{{/paper-button}} --}}
+            {{else}}
+              <div class="story-title-target" {{action "showEditStoryTitle"}}>
+                {{#if story.title}}
+                  {{story.title}}
+                {{else}}
+                  <span class="placeholder">Story title</span>
+                {{/if}}
+              </div>
+            {{/if}}
+          {{else}}
+            {{story.title}}
+          {{/if}}
+        {{/text.headline}}
       {{/title.text}}
     {{/card.title}}
   {{/if}}
@@ -25,7 +37,7 @@
     <div class="current-votes">
       Votes {{currentVotes}}/{{voters.length}}
     </div>
-    {{#paper-button class="hide"}}dummybutton{{/paper-button}}
+    {{#paper-button class="hide" }}dummybutton{{/paper-button}}
     {{#if isAdmin}}
       {{#actions.icons}}
         {{#paper-button raised=true onClick=(action "resetStory")}}Restart{{/paper-button}}
@@ -42,21 +54,20 @@
       <div class="user-vote-cards">
         {{#each story.votes as |vote|}}
           {{#paper-card as |card|}}
-           {{#card.title as |title|}}
-             {{title.media size="sm" src=vote.channelUser.user.avatar alt="User avatar" title="Avatar"}}
-             {{#title.text as |text|}}
-               {{#text.headline}}
-                 <div>{{vote.channelUser.user.name}} <small>voted</small></div>
-               {{/text.headline}}
-             {{/title.text}}
-             {{#title.media size="sm" class="user-voted-card"}}
-               {{sc-vote-card value=vote.value}}
-             {{/title.media}}
-           {{/card.title}}
+            {{#card.title as |title|}}
+              {{title.media size="sm" src=vote.channelUser.user.avatar alt="User avatar" title="Avatar"}}
+              {{#title.text as |text|}}
+                {{#text.headline}}
+                  <div>{{vote.channelUser.user.name}} <small>voted</small></div>
+                {{/text.headline}}
+              {{/title.text}}
+              {{#title.media size="sm" class="user-voted-card" }}
+                {{sc-vote-card value=vote.value}}
+              {{/title.media}}
+            {{/card.title}}
           {{/paper-card}}
         {{/each}}
       </div>
-    {{else if (and (not story.isClosed) (not currentChannelUser.isObserver))}}
       {{!-- LET USERS VOTE --}}
       {{sc-vote onVote=(action 'vote') userVote=userVote}}
     {{/if}}

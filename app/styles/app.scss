@@ -1,6 +1,4 @@
-$primary: "indigo";
-$accent: "pink";
-
+@import './variables';
 @import 'ember-paper';
 @import './application';
 @import './application/index';
@@ -11,7 +9,6 @@ $accent: "pink";
 @import './components/sc-vote';
 @import './components/sc-vote-card';
 // $warn: "pink";
-
 body {
   background: #f8f8f8;
 }

@@ -34,6 +34,27 @@
   }
 
   .input__story-title {
-    
+    height:30px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .story-title-target {
+    padding: 4px;
+    border: 1px solid transparent;
+    &:hover {
+      cursor: pointer;
+      border: 1px solid #e6e2e2;
+    }
+    .placeholder {
+      color: $gray;
+    }
+  }
+  .input--actions {
+    display: inline-block;
+    .paper-button {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 }
