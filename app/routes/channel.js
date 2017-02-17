@@ -33,12 +33,7 @@ export default Route.extend({
     let channel = this.get('channel');
     let channelUsers = channel.get('channelUsers');
 
-    let isAdmin = false;
-    if (channelUsers.get('length') === 0 || !channelUsers.isAny('isAdmin', true)) {
-      isAdmin = true;
-    }
-
-    this.get('channelService').addCurrentUser(channel, isAdmin);
+    this.get('channelService').addCurrentUser(channel, true);
   },
 
   removeUserVotes(channelUser) {

@@ -1,9 +1,12 @@
 {{#paper-card as |card|}}
+
   {{#if (or story.title isAdmin)}}
     {{#card.title as |title|}}
       {{#title.text as |text|}}
         {{#text.headline}}
+
           {{#if isAdmin}}
+
             {{#if isEditingStoryTitle}}
               {{paper-input class="input__story-title" flex=85 label="Story title" value=storyTitle onChange=(action (mut storyTitle))}}
               <div class="input--actions">
@@ -17,6 +20,7 @@
               {{!-- {{#paper-button raised=true primary=true onClick=(action "saveStoryTitle")}}Save{{/paper-button}}
               {{#paper-button onClick=(action "cancelStoryTitle")}}Cancel{{/paper-button}} --}}
             {{else}}
+
               <div class="story-title-target" {{action "showEditStoryTitle"}}>
                 {{#if story.title}}
                   {{story.title}}

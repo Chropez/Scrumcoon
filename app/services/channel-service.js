@@ -28,11 +28,12 @@ export default Service.extend({
     }
 
     let newStory = store.createRecord('story', storyObject);
-    var channelAttrs = assign(channelObject, {
+    let channelAttrs = assign(channelObject, {
       channelUsers,
       stories: [newStory],
       currentStory: newStory
     });
+
     let newChannel = store.createRecord('channel', channelAttrs);
 
     if (newChannelUser) {
@@ -59,8 +60,7 @@ export default Service.extend({
       return;
     }
 
-    let store = this.get('store');
-    let channelUser = store.createRecord('channelUser', {
+    let channelUser = this.get('store').createRecord('channelUser', {
       user, isAdmin, isObserver
     });
 

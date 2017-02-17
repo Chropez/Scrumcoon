@@ -1,0 +1,18 @@
+.user-container {
+
+  .input__username-change {
+    margin: 0;
+    padding: 0;
+  }
+
+  .input--actions {
+    display: flex;
+    position: relative;
+    top: -10px;
+
+    .paper-button {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}

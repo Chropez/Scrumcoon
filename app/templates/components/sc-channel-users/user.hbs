@@ -1,78 +1,106 @@
 <div class="user-container">
-  <div class="user-avatar">
-    {{#if channelUser.isAdmin}}
-      <img class="crown" src="/img/crown.png">
-    {{/if}}
-    {{#if channelUser.isObserver}}
-      <img class="sunglasses" src="/img/sunglasses.png">
-    {{/if}}
-    <img class="avatar" src="{{channelUser.user.avatar}}">
-  </div>
-  <div class="user-name {{if channelUser.isMe "active"}}">
-    {{channelUser.user.name}}
-    {{#if channelUser.isAdmin}}
-      <small>(admin)</small>
-    {{/if}}
-    {{#if hasVoted}}
-      <div class="label-voted">
-        voted
+  {{#if isChangingName}}
+    {{paper-input
+      class="input__username-change"
+      flex=85
+      label="Name"
+      value=newName
+      onChange=(action (mut newName))}}
+
+      <div class="input--actions">
+        {{#paper-button iconButton=true onClick=(action "changeName" channelUser.user)}}
+          {{paper-icon "check-circle" size=30 primary=true}}
+        {{/paper-button}}
+        {{#paper-button iconButton=true onClick=(action "cancelChangeName")}}
+          {{paper-icon "clear" size=28}}
+        {{/paper-button}}
+      </div>
+  {{else}}
+
+    <div class="user-avatar">
+      {{#if channelUser.isAdmin}}
+        <img class="crown" src="/img/crown.png">
+      {{/if}}
+      {{#if channelUser.isObserver}}
+        <img class="sunglasses" src="/img/sunglasses.png">
+      {{/if}}
+      <img class="avatar" src="{{channelUser.user.avatar}}">
+    </div>
+    <div class="user-name {{if channelUser.isMe "active"}}">
+      {{channelUser.user.name}}
+
+      {{#if channelUser.isAdmin}}
+        <small>(admin)</small>
+      {{/if}}
+      {{#if hasVoted}}
+        <div class="label-voted">
+          voted
+        </div>
+      {{/if}}
+    </div>
+
+    {{#if (or isAdmin channelUser.isMe)}}
+      <div class="user-actions">
+        {{#paper-menu isOpen=menuFourIsOpen position="target-right target" as |menu|}}
+          {{#menu.trigger}}
+            {{#paper-button onClick=null iconButton=true}}
+              {{paper-icon "keyboard_arrow_down" class="md-menu-origin"}}
+            {{/paper-button}}
+          {{/menu.trigger}}
+
+
+          {{#menu.content as |content|}}
+
+            {{#if channelUser.isMe}}
+                {{#content.menu-item onClick=(action (toggle "isChangingName" this))}}
+                    <span>Change Name</span>
+                {{/content.menu-item}}
+            {{/if}}
+
+            {{#if isAdmin}}
+              {{#content.menu-item onClick=(action "toggleAdmin" channelUser)}}
+                {{#if channelUser.isAdmin}}
+                  <span>Demote Admin</span>
+                {{else}}
+                  <span>Promote to Admin</span>
+                {{/if}}
+              {{/content.menu-item}}
+            {{/if}}
+
+            {{#if (or channelUser.isMe isAdmin)}}
+              {{#content.menu-item onClick=(action "toggleObserver" channelUser)}}
+                {{#if channelUser.isObserver}}
+                  <span>
+                    {{#if channelUser.isMe}}
+                      Become Voter
+                    {{else}}
+                      Make Voter
+                    {{/if}}
+                  </span>
+                {{else}}
+                  <span>
+                    {{#if channelUser.isMe}}
+                      Become Observer
+                    {{else}}
+                      Make Observer
+                    {{/if}}
+                  </span>
+                {{/if}}
+              {{/content.menu-item}}
+            {{/if}}
+
+            {{#if (or channelUser.isMe isAdmin)}}
+              {{#content.menu-item onClick=(action "kick" channelUser)}}
+                {{#if channelUser.isMe}}
+                  Leave session
+                {{else}}
+                  Kick from session
+                {{/if}}
+              {{/content.menu-item}}
+            {{/if}}
+          {{/menu.content}}
+        {{/paper-menu}}
       </div>
     {{/if}}
-  </div>
-
-  {{#if (or isAdmin channelUser.isMe)}}
-    <div class="user-actions">
-      {{#paper-menu isOpen=menuFourIsOpen position="target-right target" as |menu|}}
-        {{#menu.trigger}}
-          {{#paper-button onClick=null iconButton=true}}
-            {{paper-icon "keyboard_arrow_down" class="md-menu-origin"}}
-          {{/paper-button}}
-        {{/menu.trigger}}
-
-        {{#menu.content as |content|}}
-          {{#if isAdmin}}
-            {{#content.menu-item onClick=(action "toggleAdmin" channelUser)}}
-              {{#if channelUser.isAdmin}}
-                <span>Demote Admin</span>
-              {{else}}
-                <span>Promote to Admin</span>
-              {{/if}}
-            {{/content.menu-item}}
-          {{/if}}
-
-          {{#if (or channelUser.isMe isAdmin)}}
-            {{#content.menu-item onClick=(action "toggleObserver" channelUser)}}
-              {{#if channelUser.isObserver}}
-                <span>
-                  {{#if channelUser.isMe}}
-                    Become Voter
-                  {{else}}
-                    Make Voter
-                  {{/if}}
-                </span>
-              {{else}}
-                <span>
-                  {{#if channelUser.isMe}}
-                    Become Observer
-                  {{else}}
-                    Make Observer
-                  {{/if}}
-                </span>
-              {{/if}}
-            {{/content.menu-item}}
-          {{/if}}
-
-          {{#if (or channelUser.isMe isAdmin)}}
-            {{#content.menu-item onClick=(action "kick" channelUser)}}
-              {{#if channelUser.isMe}}
-                Leave session
-              {{else}}
-                Kick from session
-              {{/if}}
-            {{/content.menu-item}}
-          {{/if}}
-        {{/menu.content}}
-      {{/paper-menu}}
-    </div>
   {{/if}}
 </div>
