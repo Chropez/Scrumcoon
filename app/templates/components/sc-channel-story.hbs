@@ -72,6 +72,7 @@
           {{/paper-card}}
         {{/each}}
       </div>
+    {{else if (and (not story.isClosed) (not currentChannelUser.isObserver))}}
       {{!-- LET USERS VOTE --}}
       {{sc-vote onVote=(action 'vote') userVote=userVote}}
     {{/if}}
